@@ -5,10 +5,8 @@ namespace Mono
 {
     public class Startup : MonoBehaviour
     {
-        
         [SerializeField] private Config Config;
         [SerializeField] private SceneData SceneData;
-
 
         private World _ecsWorld;
 
