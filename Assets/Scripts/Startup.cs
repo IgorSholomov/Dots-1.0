@@ -11,7 +11,7 @@ namespace Mono
         private World _ecsWorld;
 
 
-        private void Start()
+        private void Start()            
         {
             /*SceneData.TextUI = "count actor entities - {0}\n" +
                                "q - delete all entities with tag Actor\n" +
