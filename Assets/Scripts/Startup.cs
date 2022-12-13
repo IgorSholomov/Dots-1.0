@@ -1,60 +1,58 @@
 using Unity.Entities;
 using UnityEngine;
 
-namespace Mono
+public class Startup : MonoBehaviour
 {
-    public class Startup : MonoBehaviour
+    [SerializeField] private Config Config;
+    [SerializeField] private SceneData SceneData;
+
+    private World _ecsWorld;
+
+
+    private void Start()
     {
-        [SerializeField] private Config Config;
-        [SerializeField] private SceneData SceneData;
-
-        private World _ecsWorld;
-
-
-        private void Start()            
-        {
-            /*SceneData.TextUI = "count actor entities - {0}\n" +
+        /*SceneData.TextUI = "count actor entities - {0}\n" +
                                "q - delete all entities with tag Actor\n" +
                                "i  - remove World and Dispose ";
                                */
 
-            Debug.developerConsoleVisible = false;
+        Debug.developerConsoleVisible = false;
 
-            // Instantiate(Config.Graphy);
+        // Instantiate(Config.Graphy);
 
-            CreateWorld();
+        CreateWorld();
 
-            CreateLevelEntity();
+        CreateLevelEntity();
 
-            // SceneData.TextValue.text = string.Format(SceneData.TextUI, Config.TestCount);
+        // SceneData.TextValue.text = string.Format(SceneData.TextUI, Config.TestCount);
 
-            Debug.Log("Start");
-        }
+        Debug.Log("Start");
+    }
 
-        private void CreateWorld()
-        {
-            _ecsWorld = new World("GameEcsWorld");
-            World.DefaultGameObjectInjectionWorld = _ecsWorld;
+    private void CreateWorld()
+    {
+        _ecsWorld = new World("GameEcsWorld");
+        World.DefaultGameObjectInjectionWorld = _ecsWorld;
 
-            var systems = DefaultWorldInitialization.GetAllSystems(WorldSystemFilterFlags.Default);
-            DefaultWorldInitialization.AddSystemsToRootLevelSystemGroups(_ecsWorld, systems);
-            ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(_ecsWorld);
+        var systems = DefaultWorldInitialization.GetAllSystems(WorldSystemFilterFlags.Default);
+        DefaultWorldInitialization.AddSystemsToRootLevelSystemGroups(_ecsWorld, systems);
+        ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(_ecsWorld);
 
-            Debug.Log("Create World");
-        }
+        Debug.Log("Create World");
+    }
 
 
-        private void CreateLevelEntity()
-        {
-            var entityManager = _ecsWorld.EntityManager;
+    private void CreateLevelEntity()
+    {
+        var entityManager = _ecsWorld.EntityManager;
 
-            var entity = entityManager.CreateEntity();
-            entityManager.SetName(entity, "Level");
-            entityManager.AddComponentObject(entity, Config);
-            entityManager.AddComponentObject(entity, SceneData);
-            entityManager.AddComponent<LevelTag>(entity);
+        var entity = entityManager.CreateEntity();
+        entityManager.SetName(entity, "Level");
+        entityManager.AddComponentObject(entity, Config);
+        entityManager.AddComponentObject(entity, SceneData);
+        entityManager.AddComponent<LevelTag>(entity);
 
-            /*var actorArchetype = entityManager.CreateArchetype
+        /*var actorArchetype = entityManager.CreateArchetype
             (
                 typeof(LevelTag),
                 ComponentType.Exclude<Config>(),
@@ -65,35 +63,34 @@ namespace Mono
             */
 
 
-            // _ecsWorld.GetOrCreateSystem<InitializationSystemGroup>().SetSingleton(new LevelTag());
+        // _ecsWorld.GetOrCreateSystem<InitializationSystemGroup>().SetSingleton(new LevelTag());
 
-            Debug.Log("Create Entity Level");
-        }
+        Debug.Log("Create Entity Level");
+    }
 
 
-        private void Update()
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                if (_ecsWorld.IsCreated)
-                    WorldDispose();
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (_ecsWorld != null)
+            if (_ecsWorld.IsCreated)
                 WorldDispose();
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (_ecsWorld != null)
+            WorldDispose();
+    }
 
 
-        private void WorldDispose()
-        {
-            ScriptBehaviourUpdateOrder.RemoveWorldFromCurrentPlayerLoop(_ecsWorld);
-            _ecsWorld.Dispose();
-            _ecsWorld = null;
+    private void WorldDispose()
+    {
+        ScriptBehaviourUpdateOrder.RemoveWorldFromCurrentPlayerLoop(_ecsWorld);
+        _ecsWorld.Dispose();
+        _ecsWorld = null;
 
-            Debug.Log("World dispose");
-        }
+        Debug.Log("World dispose");
     }
 }

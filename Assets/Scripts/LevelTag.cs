@@ -1,8 +1,5 @@
 ﻿using Unity.Entities;
 
-namespace Mono
+internal struct LevelTag: IComponentData
 {
-    internal struct LevelTag: IComponentData
-    {
-    }
 }
