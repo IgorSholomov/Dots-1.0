@@ -15,6 +15,6 @@ MonoBehaviour:
   LevelWidth: 3
   LevelHeight: 3
   ChainLenght: 3
-  TestCount: 100000
+  TestCount: 10
   AddRemoveCount: 5
   Graphy: {fileID: 0}
