@@ -2,8 +2,8 @@
 /shelf/
 /workspace.xml
 # Rider ignored files
+/.idea.GameWorld.iml
 /modules.xml
-/.idea.Dots 1.0.iml
 /contentModel.xml
 /projectSettingsUpdater.xml
 # Editor-based HTTP Client requests
