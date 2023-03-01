@@ -1,35 +1,36 @@
 using Dots.Components;
-using Mono;
 using Unity.Entities;
 using UnityEngine;
 
+
 namespace Dots.Systems
 {
-    public partial struct DotsSystemStruct: ISystem, ISystemStartStop
+    public partial struct DotsSystemStruct : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
         {
-            foreach (var sceneData in 
-                     SystemAPI.Query<LevelTag>())
-            {
-                Debug.Log($"ISystem OnCreate SceneData {sceneData.ToString()}");
-            }
+            var levelData = SystemAPI.ManagedAPI.GetSingleton<LevelData>();
+            Debug.Log($"ISystem OnCreate levelData.Config.TestCount: {levelData.Config.TestCount}");
         }
+
 
         public void OnStartRunning(ref SystemState state)
         {
-            foreach (var levelManager in SystemAPI.Query<LevelManagerData>())
-            {
-                Debug.Log($"ISystem OnStartRunning Config.TestCount: {levelManager.Config.TestCount}");
-            }
+            var levelData = SystemAPI.ManagedAPI.GetSingleton<LevelData>();
+            Debug.Log($"ISystem OnStartRunning levelData.Config.TestCount: {levelData.Config.TestCount}");
         }
+
 
         public void OnStopRunning(ref SystemState state)
         {
-            foreach (var levelManager in SystemAPI.Query<LevelManagerData>())
-            {
-                Debug.Log($"ISystem OnStopRunning Config.LevelHeight: {levelManager.Config.LevelHeight}");
-            }
+            var levelData = SystemAPI.ManagedAPI.GetSingleton<LevelData>();
+            Debug.Log($"ISystem OnStopRunning levelData.Config.LevelHeight: {levelData.Config.LevelHeight}");
+        }
+
+        public void OnDestroy(ref SystemState state)
+        {
+            var levelData = SystemAPI.ManagedAPI.GetSingleton<LevelData>();
+            Debug.Log($"ISystem OnDestroy levelData.Config.AddRemoveCount: {levelData.Config.AddRemoveCount}");
         }
     }
 }
