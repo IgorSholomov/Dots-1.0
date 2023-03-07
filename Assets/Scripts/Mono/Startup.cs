@@ -53,6 +53,15 @@ namespace Mono
         {
             var entityManager = _ecsWorld.EntityManager;
 
+            CreateCommonMethod(entityManager);
+
+            // CreateFromArchetype(entityManager);
+
+            Debug.Log("Create Entity Level");
+        }
+
+        private void CreateCommonMethod(EntityManager entityManager)
+        {
             var entity = entityManager.CreateEntity();
             entityManager.SetName(entity, "Level");
 
@@ -63,21 +72,19 @@ namespace Mono
             });
 
             entityManager.AddComponent<LevelTag>(entity);
+        }
 
-            /*var actorArchetype = entityManager.CreateArchetype
+        private void CreateFromArchetype(EntityManager entityManager)
+        {
+            var actorArchetype = entityManager.CreateArchetype
             (
                 typeof(LevelTag),
-                ComponentType.Exclude<Config>(),
-                ComponentType.ReadOnly<SceneData>()
+                ComponentType.ReadOnly<LevelData>()
             );
+            var ld = new LevelData { SceneData = SceneData, Config = Config };
             var e = entityManager.CreateEntity(actorArchetype);
+            entityManager.SetComponentData(e, ld);
             entityManager.SetName(e, "LevelFromArchetype");
-            */
-
-
-            // _ecsWorld.GetOrCreateSystem<InitializationSystemGroup>()
-
-            Debug.Log("Create Entity Level");
         }
 
 
