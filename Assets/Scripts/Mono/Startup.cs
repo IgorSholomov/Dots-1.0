@@ -24,12 +24,24 @@ namespace Mono
 
             Debug.developerConsoleVisible = false;
 
-            // Instantiate(Config.Graphy);
-
             CreateWorld();
 
-
+            // Instantiate(Config.Graphy);
             // SceneData.TextValue.text = string.Format(SceneData.TextUI, Config.TestCount);
+        }
+
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.I))
+                if (_ecsWorld.IsCreated)
+                    WorldDispose();
+        }
+
+        private void OnDestroy()
+        {
+            if (_ecsWorld != null)
+                WorldDispose();
         }
 
         private void CreateWorld()
@@ -53,14 +65,14 @@ namespace Mono
         {
             var entityManager = _ecsWorld.EntityManager;
 
-            CreateCommonMethod(entityManager);
+            CreateWithEntityManager(entityManager);
 
-            // CreateFromArchetype(entityManager);
+            // CreateWithArchetype(entityManager);
 
             Debug.Log("Create Entity Level");
         }
 
-        private void CreateCommonMethod(EntityManager entityManager)
+        private void CreateWithEntityManager(EntityManager entityManager)
         {
             var entity = entityManager.CreateEntity();
             entityManager.SetName(entity, "Level");
@@ -74,7 +86,7 @@ namespace Mono
             entityManager.AddComponent<LevelTag>(entity);
         }
 
-        private void CreateFromArchetype(EntityManager entityManager)
+        private void CreateWithArchetype(EntityManager entityManager)
         {
             var actorArchetype = entityManager.CreateArchetype
             (
@@ -85,22 +97,6 @@ namespace Mono
             var e = entityManager.CreateEntity(actorArchetype);
             entityManager.SetComponentData(e, ld);
             entityManager.SetName(e, "LevelFromArchetype");
-        }
-
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                if (_ecsWorld.IsCreated)
-                    WorldDispose();
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (_ecsWorld != null)
-                WorldDispose();
         }
 
 

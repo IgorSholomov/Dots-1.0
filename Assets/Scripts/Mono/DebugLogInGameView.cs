@@ -8,43 +8,22 @@ namespace Mono
 {
     public class DebugLogInGameView : MonoBehaviour
     {
-        private struct Log
-        {
-            public LogType Type;
-            public string Message;
+        private const float TimeStep = 0.3f;
 
-            // ReSharper disable once NotAccessedField.Local
-            public string StackTrace;
-            public float Timer;
-        }
+        private static readonly Dictionary<LogType, string> LogTypeColors = new()
+        {
+            { LogType.Assert, "green" },
+            { LogType.Error, "red" },
+            { LogType.Exception, "red" },
+            { LogType.Log, "#00FFED" },
+            { LogType.Warning, "yellow" }
+        };
 
         [SerializeField] private float LifeLog = 3f;
         [SerializeField] private TextMeshProUGUI LogText;
         [SerializeField] private Image BgLog;
 
-        private const float TimeStep = 0.3f;
-
-        private readonly List<Log> _logs = new List<Log>();
-
-        private static readonly Dictionary<LogType, string> LogTypeColors = new Dictionary<LogType, string>()
-        {
-            {LogType.Assert, "green"},
-            {LogType.Error, "red"},
-            {LogType.Exception, "red"},
-            {LogType.Log, "#00FFED"},
-            {LogType.Warning, "yellow"},
-        };
-
-
-        private void OnEnable()
-        {
-            Application.logMessageReceived += HandleLog;
-        }
-
-        private void OnDisable()
-        {
-            Application.logMessageReceived -= HandleLog;
-        }
+        private readonly List<Log> _logs = new();
 
         private void Awake()
         {
@@ -62,6 +41,17 @@ namespace Mono
             if (Input.GetKeyDown(KeyCode.BackQuote)) SetActiveBg();
 
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Backspace)) ClearLogs();
+        }
+
+
+        private void OnEnable()
+        {
+            Application.logMessageReceived += HandleLog;
+        }
+
+        private void OnDisable()
+        {
+            Application.logMessageReceived -= HandleLog;
         }
 
         private void ClearLogs()
@@ -112,7 +102,7 @@ namespace Mono
 
         private void HandleLog(string message, string stackTrace, LogType type)
         {
-            _logs.Add(new Log()
+            _logs.Add(new Log
             {
                 Message = message,
                 StackTrace = stackTrace,
@@ -121,6 +111,16 @@ namespace Mono
             });
 
             SetText();
+        }
+
+        private struct Log
+        {
+            public LogType Type;
+            public string Message;
+
+            // ReSharper disable once NotAccessedField.Local
+            public string StackTrace;
+            public float Timer;
         }
     }
 }

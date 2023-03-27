@@ -2,7 +2,6 @@ using Dots.Components;
 using Unity.Entities;
 using UnityEngine;
 
-
 namespace Dots.Systems
 {
     public partial class DotsTestSystem : SystemBase
@@ -17,7 +16,8 @@ namespace Dots.Systems
         protected override void OnStartRunning()
         {
             var levelData = SystemAPI.ManagedAPI.GetSingleton<LevelData>();
-            Debug.Log($"SystemBase OnStartRunning levelData.SceneData.Camera.depth: {levelData.SceneData.Camera.actualRenderingPath}");
+            Debug.Log(
+                $"SystemBase OnStartRunning levelData.SceneData.Camera.depth: {levelData.SceneData.Camera.actualRenderingPath}");
         }
 
 
@@ -33,8 +33,6 @@ namespace Dots.Systems
             Debug.Log($"SystemBase OnDestroy levelData.Config.AddRemoveCount: {levelData.Config.AddRemoveCount}");
         }
 
-        protected override void OnUpdate()
-        {
-        }
+        protected override void OnUpdate() { }
     }
 }

@@ -2,7 +2,5 @@
 
 namespace Dots.Components
 {
-    internal struct LevelTag: IComponentData
-    {
-    }
+    internal struct LevelTag : IComponentData { }
 }
